@@ -12,3 +12,16 @@ function throttle(func, delay) {
     }
   };
 }
+
+function throttleByRaf(fn) {
+  let rafId = null
+
+  return function (...args) {
+    if (rafId) return   // 当前帧已经安排过了
+
+    rafId = requestAnimationFrame(() => {
+      fn.apply(this, args)
+      rafId = null      // 执行完释放
+    })
+  }
+}
